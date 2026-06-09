@@ -12,4 +12,19 @@ urlpatterns = [
     views.match_candidate,
     name='match_candidate'
 ),
+path(
+    'ranking/',
+    views.candidate_ranking,
+    name='candidate_ranking'
+),
+path(
+    'hr-dashboard/',
+    views.hr_dashboard,
+    name='hr_dashboard'
+),
+path(
+    'schedule-interview/',
+    views.schedule_interview,
+    name='schedule_interview'
+),
 ]

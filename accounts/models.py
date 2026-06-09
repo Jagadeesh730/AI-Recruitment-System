@@ -9,6 +9,7 @@ class Candidate(models.Model):
     def __str__(self):
         return self.name
 class Resume(models.Model):
+
     candidate = models.ForeignKey(
         Candidate,
         on_delete=models.CASCADE
@@ -18,12 +19,13 @@ class Resume(models.Model):
         upload_to='resumes/'
     )
 
+    extracted_skills = models.TextField(
+        blank=True
+    )
+
     uploaded_at = models.DateTimeField(
         auto_now_add=True
     )
-
-    def __str__(self):
-        return self.candidate.name
 class Job(models.Model):
 
     title = models.CharField(max_length=100)
@@ -34,3 +36,15 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+class Interview(models.Model):
+
+    candidate_name = models.CharField(
+        max_length=100
+    )
+
+    interview_date = models.DateField()
+
+    interview_time = models.TimeField()
+
+    def __str__(self):
+        return self.candidate_name
