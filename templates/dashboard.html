@@ -1,26 +1,358 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Candidate Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f4f6f9;
+        }
+
+        .card{
+            border-radius:15px;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
+<nav class="navbar navbar-dark bg-primary">
+
+    <div class="container">
+
+        <span class="navbar-brand">
+            Candidate Dashboard
+        </span>
+
+        <a href="/logout/" class="btn btn-light">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
 <div class="container mt-5">
 
-    <h1>Welcome Candidate</h1>
+    <div class="card shadow">
 
-    <div class="mt-4">
+        <div class="card-body">
 
-        <a href="/upload-resume/" class="btn btn-primary">
-            Upload Resume
-        </a>
+            <h2>
+    Welcome {{ candidate.name }} 👋
+</h2>
+<div class="row mt-3">
+
+    <div class="col-md-4">
+
+        <div class="card shadow text-center">
+
+            <div class="card-body">
+
+                <h5>Total Applications</h5>
+
+                <h2>{{ total_applications }}</h2>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow text-center">
+
+            <div class="card-body">
+
+                <h5>Highest Match Score</h5>
+
+                <h2>{{ highest_score }}%</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow text-center">
+
+            <div class="card-body">
+
+                <h5>Resume Uploaded</h5>
+
+                <h2>{{ resume_uploaded }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% if best_job %}
+
+<div class="card shadow mt-4 border-success">
+
+    <div class="card-body text-center">
+
+        <h3>🏆 Best Matching Job</h3>
+
+        <h2>{{ best_job.job }}</h2>
+
+        <h4 class="text-success">
+
+            Match Score: {{ best_job.score }}%
+
+        </h4>
+
+        <p>
+
+            Recommended for you based on your resume skills.
+
+        </p>
 
     </div>
 
 </div>
 
+{% endif %}
+<p class="text-muted">
+    Manage your profile, resume and job applications.
+</p>
+
+<hr>
+
+<p>
+    <strong>Name:</strong>
+    {{ candidate.name }}
+</p>
+
+<p>
+    <strong>Email:</strong>
+    {{ candidate.email }}
+</p>
+
+<p>
+    <strong>Skills:</strong>
+    {{ candidate.skills }}
+</p>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow">
+
+                <div class="card-body text-center">
+
+                    <h4>📄 Resume</h4>
+
+                    <p>
+                        Upload and manage your resume.
+                    </p>
+
+                    <a href="/upload-resume/" class="btn btn-primary">
+                        Upload Resume
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-4">
+
+    <div class="card shadow">
+
+        <div class="card-body text-center">
+
+            <h4>📋 Applications</h4>
+
+            <p>
+                View your application summary.
+            </p>
+
+            <a
+                href="/application-summary/"
+                class="btn btn-info"
+            >
+                View Summary
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow">
+
+                <div class="card-body text-center">
+
+                    <h4>💼 Jobs</h4>
+
+                    <p>
+                        View available opportunities.
+                    </p>
+
+                    <a href="/jobs/" class="btn btn-warning">
+                        View Jobs
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+<div class="card shadow mt-4">
+
+    <div class="card-body">
+
+        <h3>Applied Jobs</h3>
+
+        {% for app in applications %}
+
+            <div class="alert alert-info">
+
+               <strong>{{ app.job_title }}</strong>
+
+                    <br>
+
+                        Status:
+                <span class="badge bg-success">
+                        {{ app.status }}
+                </span>
+
+            </div>
+
+        {% empty %}
+
+            <div class="alert alert-warning">
+
+                No applications yet.
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+<div class="card shadow mt-4">
+
+    <div class="card-body">
+
+        <h3>
+            Resume Match Scores
+        </h3>
+
+        {% for item in match_scores %}
+
+        <div class="card mb-3">
+
+            <div class="card-body">
+
+                <strong>
+                    {{ item.job }}
+                </strong>
+
+                <div class="progress mt-2">
+
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {{ item.score }}%;"
+                    >
+                        {{ item.score }}%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+
+<div class="alert alert-warning">
+
+    Upload a resume to see match scores.
+
+</div>
+
+{% endfor %}
+<div class="card shadow mt-4">
+
+    <div class="card-body">
+
+        <h3>📅 Scheduled Interviews</h3>
+
+        {% if interviews %}
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+                    <th>Job Title</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for interview in interviews %}
+
+                <tr>
+
+                    <td>{{ interview.job_title }}</td>
+
+                    <td>{{ interview.interview_date }}</td>
+
+                    <td>{{ interview.interview_time }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="alert alert-warning">
+
+            No interviews scheduled.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    </div>
+        
+ </div>
+
+</div>
 </body>
 </html>
