@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Post Job{% endblock %}
+{% block breadcrumb %}Post a New Job{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Main</div>
+<a href="/hr-dashboard/" class="sidebar-link">
+    <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<a href="/post-job/" class="sidebar-link active">
+    <i class="bi bi-plus-circle"></i> Post Job
+</a>
+<a href="/applications/" class="sidebar-link">
+    <i class="bi bi-file-text"></i> Applications
+</a>
+<a href="/ranking/" class="sidebar-link">
+    <i class="bi bi-trophy"></i> Rankings
+</a>
+<a href="/job-recommendations/" class="sidebar-link">
+    <i class="bi bi-cpu"></i> AI Recommendations
+</a>
+<a href="/schedule-interview/" class="sidebar-link">
+    <i class="bi bi-calendar"></i> Schedule Interview
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="mb-1">Post a New Job</h4>
+                <p class="text-muted mb-4">Fill in the details to create a new job opening.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Senior Python Developer" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="5" placeholder="Describe the role, responsibilities, and qualifications..." required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Required Skills</label>
+                        <textarea name="skills" class="form-control" rows="3" placeholder="Python, Django, SQL, Machine Learning, React" required></textarea>
+                        <div class="form-text small text-muted">Enter skills separated by commas.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-send"></i> Post Job
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

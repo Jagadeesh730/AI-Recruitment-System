@@ -23,9 +23,26 @@ class Resume(models.Model):
         blank=True
     )
 
+    resume_score = models.IntegerField(
+        default=0
+    )
+
+    feedback = models.TextField(
+        blank=True
+    )
+    interview_questions = models.TextField(
+    blank=True
+    )
+    skill_gap = models.TextField(
+    blank=True
+    )
+
     uploaded_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    def __str__(self):
+        return self.candidate.name
 class Job(models.Model):
 
     title = models.CharField(max_length=100)

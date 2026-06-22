@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}Candidate Ranking{% endblock %}
-{% block breadcrumb %}Candidate Ranking{% endblock %}
+{% block title %}AI Recommendations{% endblock %}
+{% block breadcrumb %}AI Candidate Recommendations{% endblock %}
 
 {% block sidebar_links %}
 <div class="sidebar-section">Main</div>
@@ -13,10 +13,10 @@
 <a href="/applications/" class="sidebar-link">
     <i class="bi bi-file-text"></i> Applications
 </a>
-<a href="/ranking/" class="sidebar-link active">
+<a href="/ranking/" class="sidebar-link">
     <i class="bi bi-trophy"></i> Rankings
 </a>
-<a href="/job-recommendations/" class="sidebar-link">
+<a href="/job-recommendations/" class="sidebar-link active">
     <i class="bi bi-cpu"></i> AI Recommendations
 </a>
 <a href="/schedule-interview/" class="sidebar-link">
@@ -25,10 +25,17 @@
 {% endblock %}
 
 {% block content %}
-<h3 class="mb-1">Candidate Ranking</h3>
-<p class="text-muted mb-4">Candidates ranked by AI match score.</p>
+<h3 class="mb-1">AI Candidate Recommendations</h3>
+<p class="text-muted mb-4">Top candidates recommended by AI for each job position.</p>
 
-<div class="card">
+{% for job_title, candidates in recommendations.items %}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">
+            <i class="bi bi-briefcase text-primary"></i> {{ job_title }}
+        </h5>
+        <span class="badge bg-primary">{{ candidates|length }} candidates</span>
+    </div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table mb-0">
@@ -40,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in rankings %}
+                    {% for candidate in candidates %}
                     <tr>
                         <td>
                             {% if forloop.counter == 1 %}
@@ -53,22 +60,19 @@
                                 <span class="text-muted">{{ forloop.counter }}th</span>
                             {% endif %}
                         </td>
-                        <td class="fw-medium">{{ item.name }}</td>
+                        <td class="fw-medium">{{ candidate.name }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <div class="progress flex-grow-1" style="height:6px;max-width:160px;">
-                                    <div class="progress-bar" style="width:{{ item.score }}%;"></div>
+                                <div class="progress flex-grow-1" style="height:6px;max-width:120px;">
+                                    <div class="progress-bar" style="width:{{ candidate.score }}%;"></div>
                                 </div>
-                                <span class="small fw-medium">{{ item.score }}%</span>
+                                <span class="small fw-medium">{{ candidate.score }}%</span>
                             </div>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="3" class="text-center py-5 text-muted">
-                            <i class="bi bi-trophy" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                            No rankings available yet.
-                        </td>
+                        <td colspan="3" class="text-center py-3 text-muted">No recommendations for this job.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -76,4 +80,15 @@
         </div>
     </div>
 </div>
+{% empty %}
+<div class="card">
+    <div class="card-body text-center py-5">
+        <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-cpu"></i></div>
+            <h4>No recommendations yet</h4>
+            <p>Post jobs and upload resumes to get AI-powered recommendations.</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
