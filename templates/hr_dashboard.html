@@ -28,15 +28,19 @@
 <form method="GET" class="d-flex align-items-center gap-2 me-3">
     <div class="input-group input-group-sm" style="max-width:260px;">
         <input type="text" name="search" class="form-control" placeholder="Search candidates..." value="{{ request.GET.search }}">
-        <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
     </div>
 </form>
-<div class="user-avatar">H</div>
+<div class="user-avatar" style="background:var(--primary-500);color:#fff;">H</div>
 {% endblock %}
 
 {% block content %}
-<h3 class="mb-1">HR Dashboard</h3>
-<p class="text-muted mb-4">Recruitment overview and analytics.</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="mb-1">HR Dashboard</h3>
+        <p class="text-muted mb-0">Recruitment overview and analytics.</p>
+    </div>
+</div>
 
 <div class="row g-4 mb-4">
     <div class="col-md-3">
@@ -82,6 +86,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0"><i class="bi bi-trophy"></i> Candidate Rankings</h5>
+                <span class="badge bg-primary rounded-pill">{{ rankings|length }}</span>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -99,28 +104,28 @@
                             <tr>
                                 <td>
                                     {% if forloop.counter == 1 %}
-                                        <span class="badge bg-warning">1st</span>
+                                        <span class="badge rounded-pill bg-warning px-3 py-1">1st</span>
                                     {% elif forloop.counter == 2 %}
-                                        <span class="badge bg-secondary">2nd</span>
+                                        <span class="badge rounded-pill bg-secondary px-3 py-1">2nd</span>
                                     {% elif forloop.counter == 3 %}
-                                        <span class="badge" style="background:#cd7f32;color:#fff;">3rd</span>
+                                        <span class="badge rounded-pill px-3 py-1" style="background:#cd7f32;color:#fff;">3rd</span>
                                     {% else %}
-                                        <span class="text-muted">{{ forloop.counter }}th</span>
+                                        <span class="text-muted fw-medium">{{ forloop.counter }}th</span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="/candidate-details/{{ candidate.name }}/" class="fw-medium">{{ candidate.name }}</a>
+                                    <a href="/candidate-details/{{ candidate.name }}/" class="fw-medium text-primary text-decoration-none">{{ candidate.name }}</a>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
-                                        <div class="progress flex-grow-1" style="height:6px;max-width:120px;">
-                                            <div class="progress-bar" style="width:{{ candidate.score }}%;"></div>
+                                        <div class="progress flex-grow-1" style="height:8px;max-width:120px;border-radius:4px;">
+                                            <div class="progress-bar" style="width:{{ candidate.score }}%;border-radius:4px;"></div>
                                         </div>
                                         <span class="small fw-medium">{{ candidate.score }}%</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="/shortlist/{{ candidate.name }}/" class="btn btn-sm btn-success">
+                                    <a href="/shortlist/{{ candidate.name }}/" class="btn btn-sm btn-primary">
                                         <i class="bi bi-check"></i> Shortlist
                                     </a>
                                 </td>
@@ -143,32 +148,32 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-6 col-md">
-                        <div class="text-center p-3 bg-light rounded-3">
-                            <div class="fw-bold fs-4">{{ total_applications }}</div>
+                        <div class="text-center p-3 rounded-3" style="background:var(--primary-50);">
+                            <div class="fw-bold fs-4" style="color:var(--primary-600);">{{ total_applications }}</div>
                             <small class="text-muted">Total</small>
                         </div>
                     </div>
                     <div class="col-6 col-md">
-                        <div class="text-center p-3 bg-light rounded-3">
-                            <div class="fw-bold fs-4">{{ applied_count }}</div>
+                        <div class="text-center p-3 rounded-3" style="background:var(--primary-50);">
+                            <div class="fw-bold fs-4" style="color:var(--primary-600);">{{ applied_count }}</div>
                             <small class="text-muted">Applied</small>
                         </div>
                     </div>
                     <div class="col-6 col-md">
-                        <div class="text-center p-3 bg-light rounded-3">
-                            <div class="fw-bold fs-4">{{ shortlisted_count }}</div>
+                        <div class="text-center p-3 rounded-3" style="background:var(--success-50);">
+                            <div class="fw-bold fs-4" style="color:var(--success-600);">{{ shortlisted_count }}</div>
                             <small class="text-muted">Shortlisted</small>
                         </div>
                     </div>
                     <div class="col-6 col-md">
-                        <div class="text-center p-3 bg-light rounded-3">
-                            <div class="fw-bold fs-4">{{ interview_scheduled_count }}</div>
+                        <div class="text-center p-3 rounded-3" style="background:var(--warning-50);">
+                            <div class="fw-bold fs-4" style="color:var(--warning-600);">{{ interview_scheduled_count }}</div>
                             <small class="text-muted">Interview</small>
                         </div>
                     </div>
                     <div class="col-6 col-md">
-                        <div class="text-center p-3 bg-light rounded-3">
-                            <div class="fw-bold fs-4">{{ rejected_count }}</div>
+                        <div class="text-center p-3 rounded-3" style="background:var(--danger-50);">
+                            <div class="fw-bold fs-4" style="color:var(--danger-600);">{{ rejected_count }}</div>
                             <small class="text-muted">Rejected</small>
                         </div>
                     </div>
@@ -179,9 +184,9 @@
 
     <div class="col-lg-5">
         {% if top_candidate %}
-        <div class="card border-primary mb-4">
+        <div class="card mb-4" style="border-left:4px solid var(--primary-500);">
             <div class="card-body text-center">
-                <div class="stat-icon accent-blue mx-auto mb-3" style="width:64px;height:64px;font-size:28px;">
+                <div class="job-card-company mx-auto mb-3" style="width:64px;height:64px;font-size:28px;border-radius:var(--radius-xl);">
                     <i class="bi bi-star-fill"></i>
                 </div>
                 <h5>Top Candidate</h5>
@@ -211,7 +216,7 @@
                     <a href="/job-recommendations/" class="btn btn-secondary"><i class="bi bi-cpu"></i> AI Recommendations</a>
                     <a href="/schedule-interview/" class="btn btn-secondary"><i class="bi bi-calendar"></i> Schedule Interview</a>
                     <a href="/applications/" class="btn btn-secondary"><i class="bi bi-file-text"></i> View Applications</a>
-                    <a href="/admin/" class="btn btn-outline"><i class="bi bi-shield-lock"></i> Admin Panel</a>
+                    <a href="/admin/" class="btn btn-outline-primary"><i class="bi bi-shield-lock"></i> Admin Panel</a>
                 </div>
             </div>
         </div>
@@ -233,8 +238,10 @@
                         <tbody>
                             {% for result in search_results %}
                             <tr>
-                                <td>{{ result.name }}</td>
-                                <td>{{ result.score }}%</td>
+                                <td class="fw-medium">{{ result.name }}</td>
+                                <td>
+                                    <span class="badge rounded-pill bg-primary">{{ result.score }}%</span>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -25,8 +25,12 @@
 {% endblock %}
 
 {% block content %}
-<h3 class="mb-1">Candidate Ranking</h3>
-<p class="text-muted mb-4">Candidates ranked by AI match score.</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="mb-1">Candidate Rankings</h3>
+        <p class="text-muted mb-0">Candidates ranked by AI match score.</p>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-body p-0">
@@ -44,22 +48,22 @@
                     <tr>
                         <td>
                             {% if forloop.counter == 1 %}
-                                <span class="badge bg-warning">1st</span>
+                                <span class="badge rounded-pill bg-warning px-3 py-1">1st</span>
                             {% elif forloop.counter == 2 %}
-                                <span class="badge bg-secondary">2nd</span>
+                                <span class="badge rounded-pill bg-secondary px-3 py-1">2nd</span>
                             {% elif forloop.counter == 3 %}
-                                <span class="badge" style="background:#cd7f32;color:#fff;">3rd</span>
+                                <span class="badge rounded-pill px-3 py-1" style="background:#cd7f32;color:#fff;">3rd</span>
                             {% else %}
-                                <span class="text-muted">{{ forloop.counter }}th</span>
+                                <span class="text-muted fw-medium">{{ forloop.counter }}th</span>
                             {% endif %}
                         </td>
                         <td class="fw-medium">{{ item.name }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <div class="progress flex-grow-1" style="height:6px;max-width:160px;">
-                                    <div class="progress-bar" style="width:{{ item.score }}%;"></div>
+                                <div class="progress flex-grow-1" style="height:8px;max-width:160px;border-radius:4px;">
+                                    <div class="progress-bar" style="width:{{ item.score }}%;border-radius:4px;"></div>
                                 </div>
-                                <span class="small fw-medium">{{ item.score }}%</span>
+                                <span class="small fw-medium {% if item.score >= 80 %}text-success{% elif item.score >= 60 %}text-primary{% else %}text-muted{% endif %}">{{ item.score }}%</span>
                             </div>
                         </td>
                     </tr>

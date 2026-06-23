@@ -66,24 +66,28 @@
 </div>
 
 {% if best_job %}
-<div class="card border-primary mb-4">
-    <div class="card-body d-flex align-items-center gap-3">
-        <div class="stat-icon accent-blue" style="width:56px;height:56px;font-size:24px;flex-shrink:0;">
-            <i class="bi bi-trophy"></i>
-        </div>
-        <div>
-            <h5 class="mb-1">Best Matching Job</h5>
-            <p class="mb-0 text-muted">{{ best_job.job }} — <strong class="text-primary">{{ best_job.score }}%</strong> match score based on your skills.</p>
+    <div class="card mb-4" style="border-left:4px solid var(--primary-500);">
+        <div class="card-body d-flex align-items-center gap-3">
+            <div class="job-card-company" style="width:48px;height:48px;font-size:20px;">
+                <i class="bi bi-trophy"></i>
+            </div>
+            <div>
+                <h5 class="mb-1">Best Match</h5>
+                <p class="mb-0 text-muted">{{ best_job.job }} — <strong class="text-primary">{{ best_job.score }}%</strong> match</p>
+            </div>
+            <a href="/jobs/" class="btn btn-primary btn-sm ms-auto">
+                <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </div>
-</div>
 {% endif %}
 
 <div class="row g-4">
-    <div class="col-lg-7">
+    <div class="col-lg-8">
         <div class="card h-100">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0"><i class="bi bi-bar-chart"></i> Resume Match Scores</h5>
+                <span class="badge bg-primary rounded-pill">{{ match_scores|length }} jobs</span>
             </div>
             <div class="card-body">
                 {% if match_scores %}
@@ -91,10 +95,10 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between mb-1">
                         <span class="fw-medium small">{{ item.job }}</span>
-                        <span class="small text-muted">{{ item.score }}%</span>
+                        <span class="small fw-medium text-primary">{{ item.score }}%</span>
                     </div>
-                    <div class="progress" style="height:6px;">
-                        <div class="progress-bar" style="width: {{ item.score }}%;" role="progressbar"></div>
+                    <div class="progress" style="height:8px;border-radius:4px;">
+                        <div class="progress-bar" style="width: {{ item.score }}%;border-radius:4px;" role="progressbar"></div>
                     </div>
                 </div>
                 {% endfor %}
@@ -109,24 +113,25 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-4">
         <div class="card h-100">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0"><i class="bi bi-send"></i> Applied Jobs</h5>
+                <span class="badge bg-primary rounded-pill">{{ applications|length }}</span>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 {% for app in applications %}
-                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
                     <div>
                         <div class="fw-medium">{{ app.job_title }}</div>
                         <small class="text-muted">{{ app.applied_at|date:"M d, Y" }}</small>
                     </div>
-                    <span class="badge bg-{% if app.status == 'Applied' %}primary{% elif app.status == 'Shortlisted' %}success{% elif app.status == 'Interview Scheduled' %}warning{% else %}danger{% endif %}">
+                    <span class="badge rounded-pill bg-{% if app.status == 'Applied' %}primary{% elif app.status == 'Shortlisted' %}success{% elif app.status == 'Interview Scheduled' %}warning{% else %}danger{% endif %}">
                         {{ app.status }}
                     </span>
                 </div>
                 {% empty %}
-                <div class="empty-state">
+                <div class="empty-state p-4">
                     <div class="empty-icon"><i class="bi bi-send"></i></div>
                     <h4>No applications yet</h4>
                     <p>Browse jobs and apply to get started.</p>
